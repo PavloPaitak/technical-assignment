@@ -1,0 +1,130 @@
+﻿@page "/items/{Id}"
+@inject Application.Services.IItemService ItemService
+
+@code {
+    [Parameter] public string Id { get; set; }
+    private Core.Item? Item;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        Item = await ItemService.GetItem(Id);
+    }
+}
+
+@if (Item == null)
+{
+    <h3>Item not found</h3>
+}
+else
+{
+    <h2>Details for: @Item.Headline</h2>
+
+    <dl class="row">
+        <dt class="col-sm-2">Id</dt>
+        <dd class="col-sm-10">@Item.Id</dd>
+
+        <dt class="col-sm-2">Headline</dt>
+        <dd class="col-sm-10">@Item.Headline</dd>
+
+        <dt class="col-sm-2">Body</dt>
+        <dd class="col-sm-10">@Item.Body</dd>
+
+        <dt class="col-sm-2">Cast</dt>
+        <dd class="col-sm-10">@string.Join(", ", Item.Cast.Select(c => c.Name))</dd>
+
+        <dt class="col-sm-2">Directors</dt>
+        <dd class="col-sm-10">@string.Join(", ", Item.Directors.Select(d => d.Name))</dd>
+
+        <dt class="col-sm-2">Genres</dt>
+        <dd class="col-sm-10">@string.Join(", ", Item.Genres)</dd>
+
+        <dt class="col-sm-2">Class</dt>
+        <dd class="col-sm-10">@Item.Class</dd>
+
+        <dt class="col-sm-2">Cert</dt>
+        <dd class="col-sm-10">@Item.Cert</dd>
+
+        <dt class="col-sm-2">Duration</dt>
+        <dd class="col-sm-10">@Item.Duration</dd>
+
+        <dt class="col-sm-2">Year</dt>
+        <dd class="col-sm-10">@Item.Year</dd>
+
+        <dt class="col-sm-2">LastUpdated</dt>
+        <dd class="col-sm-10">@Item.LastUpdated</dd>
+
+        <dt class="col-sm-2">Quote</dt>
+        <dd class="col-sm-10">@Item.Quote</dd>
+
+        <dt class="col-sm-2">Rating</dt>
+        <dd class="col-sm-10">@Item.Rating</dd>
+
+        <dt class="col-sm-2">ReviewAuthor</dt>
+        <dd class="col-sm-10">@Item.ReviewAuthor</dd>
+
+        <dt class="col-sm-2">Sum</dt>
+        <dd class="col-sm-10">@Item.Sum</dd>
+
+        <dt class="col-sm-2">Synopsis</dt>
+        <dd class="col-sm-10">@Item.Synopsis</dd>
+
+        <dt class="col-sm-2">Url</dt>
+        <dd class="col-sm-10">@Item.Url</dd>
+
+        <dt class="col-sm-2">SkyGoId</dt>
+        <dd class="col-sm-10">@Item.SkyGoId</dd>
+
+        <dt class="col-sm-2">SkyGoUrl</dt>
+        <dd class="col-sm-10">@Item.SkyGoUrl</dd>
+
+        <dt class="col-sm-2">CardImages URLs</dt>
+        <dd class="col-sm-10">
+            @foreach (var img in Item.CardImages)
+            {
+                @img.Url <br />
+            }
+        </dd>
+
+        <dt class="col-sm-2">KeyArtImages URLs</dt>
+        <dd class="col-sm-10">
+            @foreach (var img in Item.KeyArtImages)
+            {
+                @img.Url <br />
+            }
+        </dd>
+
+        <dt class="col-sm-2">Videos</dt>
+        <dd class="col-sm-10">
+            @if (Item.Videos.Any())
+            {
+                foreach (var vid in Item.Videos)
+                {
+                    <div class="mb-3">
+                        <strong>@vid.Title</strong> (@vid.Type): @vid.Url<br />
+                        <span>Alternatives:</span>
+                        <ul>
+                            @foreach (var alt in vid.Alternatives)
+                            {
+                                <li>@alt.Quality: @alt.Url</li>
+                            }
+                        </ul>
+                    </div>
+                }
+            }
+            else
+            {
+                <em>No videos available.</em>
+            }
+        </dd>
+
+        <dt class="col-sm-2">ViewingWindow</dt>
+        <dd class="col-sm-10">
+            StartDate: @Item.ViewingWindow?.StartDate<br />
+            EndDate:   @Item.ViewingWindow?.EndDate<br />
+            WayToWatch: @Item.ViewingWindow?.WayToWatch<br />
+            Title (alt): @Item.ViewingWindow?.Title
+        </dd>
+    </dl>
+
+    <a class="btn btn-secondary" href="/items/list">Back to list</a>
+}

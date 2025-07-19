@@ -1,0 +1,49 @@
+﻿@page "/"
+@page "/items/list"
+@using Core
+@inject Application.Services.IItemService ItemService
+
+<h1>All Items</h1>
+
+@if (items == null)
+{
+    <p><em>Loading…</em></p>
+}
+else if (items.Count == 0)
+{
+    <p><em>No items found.</em></p>
+}
+else
+{
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Id</th>
+            <th>Headline</th>
+            <th>Year</th>
+        </tr>
+        </thead>
+        <tbody>
+        @for (var i = 0; i < items.Count; i++)
+        {
+            var item = items[i];
+            <tr style="cursor:pointer">
+                <td>@(i + 1)</td>
+                <td><a href="/items/@item.Id">@item.Id</a></td>
+                <td>@item.Headline</td>
+                <td>@item.Year</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IReadOnlyList<Item>? items;
+
+    protected override async Task OnInitializedAsync()
+    {
+        items = await ItemService.GetItems();
+    }
+}

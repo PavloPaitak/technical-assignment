@@ -6,4 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TechnicalAssignment.Infrastructure\TechnicalAssignment.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
