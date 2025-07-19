@@ -8,10 +8,10 @@ namespace TechnicalAssignment.Infrastructure.Services;
 public class ItemService : IItemService
 {
     private const string AllItemsKey = "AllItems";
-    private readonly TimeSpan _itemsTtl = TimeSpan.FromMinutes(5); // todo: pp can be moved to appsettings
 
     private readonly IItemApi _api;
     private readonly IMemoryCache _cache;
+    private readonly TimeSpan _ttl = TimeSpan.FromMinutes(5); // todo: pp can be moved to appsettings
 
     public ItemService(IItemApi api, IMemoryCache cache)
     {
@@ -23,17 +23,13 @@ public class ItemService : IItemService
     {
         if (_cache.TryGetValue(AllItemsKey, out IReadOnlyList<Item>? items)) return items ?? [];
 
-        // Fetch fresh
         items = await _api.GetItems();
+        _cache.Set(AllItemsKey, items, _ttl);
 
-        // Cache all
-        _cache.Set(AllItemsKey, items, _itemsTtl);
-
-        // Cache per-id
         foreach (var item in items)
         {
             var key = GetItemKey(item.Id);
-            _cache.Set(key, item, _itemsTtl);
+            _cache.Set(key, item, _ttl);
         }
 
         return items;
@@ -42,15 +38,11 @@ public class ItemService : IItemService
     public async Task<Item?> GetItem(string id)
     {
         var key = GetItemKey(id);
-
-        // Get from cache
         if (_cache.TryGetValue(key, out Item? cached)) return cached;
 
-        // Fallback: refetch all items and cache
         var items = await GetItems();
-        var item = items.FirstOrDefault(x => x.Id == id);
 
-        return item;
+        return items.FirstOrDefault(x => x.Id == id);
     }
 
     private static string GetItemKey(string id)

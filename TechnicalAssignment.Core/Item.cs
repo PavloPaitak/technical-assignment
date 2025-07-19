@@ -47,6 +47,7 @@ public class Director
 public class Image
 {
     public string Url { get; set; } = null!;
+    public string CachedUrl { get; set; } = null!;
     public int H { get; set; }
     public int W { get; set; }
 }

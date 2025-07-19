@@ -16,9 +16,12 @@ public class Program
         builder.Services.AddItemApi(config);
         builder.Services.AddMemoryCache();
         builder.Services.AddScoped<IItemService, ItemService>();
-        builder.Services
-            .AddRazorComponents()
-            .AddInteractiveServerComponents();
+        builder.Services.AddScoped<IImageCacheService, ImageCacheService>();
+        builder.Services.AddHttpClient<ImageCacheService>()
+            .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+            .ConfigureHttpClient(c => c.Timeout = TimeSpan.FromSeconds(10)); // todo: pp can be moved to appsettings
+        builder.Services.AddControllers();
+        builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
         // Build app
         var app = builder.Build();
@@ -32,13 +35,11 @@ public class Program
         }
 
         app.UseHttpsRedirection();
-
         app.UseStaticFiles();
+        app.UseRouting();
         app.UseAntiforgery();
-
-        app
-            .MapRazorComponents<App>()
-            .AddInteractiveServerRenderMode();
+        app.MapControllers();
+        app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
 
         // Run app
         app.Run();

@@ -10,4 +10,10 @@
     <ProjectReference Include="..\TechnicalAssignment.Infrastructure\TechnicalAssignment.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\images\placeholder.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

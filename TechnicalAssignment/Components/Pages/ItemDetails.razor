@@ -1,13 +1,27 @@
 ﻿@page "/items/{Id}"
-@inject Application.Services.IItemService ItemService
+@using Core
+@using TechnicalAssignment.Application.Services
+@inject IItemService ItemService
+@inject IImageCacheService ImageCacheService
 
 @code {
-    [Parameter] public string Id { get; set; }
-    private Core.Item? Item;
+    [Parameter] public required string Id { get; set; }
+    private Item? Item;
 
     protected override async Task OnParametersSetAsync()
     {
         Item = await ItemService.GetItem(Id);
+        if (Item == null) return;
+        
+        foreach (var img in Item.CardImages)
+        {
+            img.CachedUrl = await ImageCacheService.GetCachedImageUrl(img.Url);
+        }
+
+        foreach (var img in Item.KeyArtImages)
+        {
+            img.CachedUrl = await ImageCacheService.GetCachedImageUrl(img.Url);
+        }
     }
 }
 
@@ -81,7 +95,7 @@ else
         <dd class="col-sm-10">
             @foreach (var img in Item.CardImages)
             {
-                @img.Url <br />
+                <img src="@img.CachedUrl" width="@img.W" height="@img.H" alt="" /><br />
             }
         </dd>
 
@@ -89,7 +103,7 @@ else
         <dd class="col-sm-10">
             @foreach (var img in Item.KeyArtImages)
             {
-                @img.Url <br />
+                <img src="@img.CachedUrl" width="@img.W" height="@img.H" alt="" /><br />
             }
         </dd>
 
