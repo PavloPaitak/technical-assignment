@@ -14,6 +14,7 @@ public class Program
 
         // Add services to the container
         builder.Services.AddItemApi(config);
+        builder.Services.AddMemoryCache();
         builder.Services.AddScoped<IItemService, ItemService>();
         builder.Services
             .AddRazorComponents()
