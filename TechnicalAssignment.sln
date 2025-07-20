@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechnicalAssignment", "TechnicalAssignment.csproj", "{5F20DAE3-98F1-426A-924F-A8746A6B0A76}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechnicalAssignment", "TechnicalAssignment\TechnicalAssignment.csproj", "{5F20DAE3-98F1-426A-924F-A8746A6B0A76}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechnicalAssignment.Application", "..\TechnicalAssignment.Application\TechnicalAssignment.Application.csproj", "{1837D314-CCFB-41DC-BDB8-59904B4A6E9D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechnicalAssignment.Application", "TechnicalAssignment.Application\TechnicalAssignment.Application.csproj", "{1837D314-CCFB-41DC-BDB8-59904B4A6E9D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechnicalAssignment.Infrastructure", "..\TechnicalAssignment.Infrastructure\TechnicalAssignment.Infrastructure.csproj", "{4A1171F3-8498-4CC4-A340-C66C7D096013}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechnicalAssignment.Infrastructure", "TechnicalAssignment.Infrastructure\TechnicalAssignment.Infrastructure.csproj", "{4A1171F3-8498-4CC4-A340-C66C7D096013}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechnicalAssignment.Core", "..\TechnicalAssignment.Core\TechnicalAssignment.Core.csproj", "{93C2FBE9-8F34-4BC6-8D55-158C547FDE95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechnicalAssignment.Core", "TechnicalAssignment.Core\TechnicalAssignment.Core.csproj", "{93C2FBE9-8F34-4BC6-8D55-158C547FDE95}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
