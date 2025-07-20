@@ -2,5 +2,5 @@
 
 public interface IImageCacheService
 {
-    Task<string> GetCachedImageUrl(string externalUrl);
+    Task<string> CacheImage(string externalUrl);
 }

@@ -6,6 +6,7 @@ using TechnicalAssignment.Application.Services;
 
 namespace TechnicalAssignment.Infrastructure.Services;
 
+// todo: pp it can be refactored into ImageFatcher/ImageService and ImageCacheService
 public class ImageCacheService : IImageCacheService
 {
     private const string FallbackImageUrl = "/images/placeholder.webp"; // todo: pp can be moved to appsettings
@@ -25,7 +26,7 @@ public class ImageCacheService : IImageCacheService
         _logger = logger;
     }
 
-    public async Task<string> GetCachedImageUrl(string externalUrl)
+    public async Task<string> CacheImage(string externalUrl)
     {
         var key = ComputeKey(externalUrl);
         if (_cache.TryGetValue<ImageCacheEntry>(key, out var entry)) return BuildCachedImageUrl(key);

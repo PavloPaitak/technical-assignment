@@ -19,8 +19,8 @@
 
         var tasks = groups.Select(async group =>
         {
-            var cachedUrl = await ImageCacheService.GetCachedImageUrl(group.Key);
-            foreach (var image in group) image.CachedUrl = cachedUrl;
+            var cachedImageUrl = await ImageCacheService.CacheImage(externalUrl: group.Key);
+            foreach (var image in group) image.CachedUrl = cachedImageUrl;
         });
 
         await Task.WhenAll(tasks);
