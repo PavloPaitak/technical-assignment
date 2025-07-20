@@ -9,8 +9,6 @@ namespace TechnicalAssignment.Infrastructure.Services;
 // todo: pp it can be refactored into ImageFatcher/ImageService and ImageCacheService
 public class ImageCacheService : IImageCacheService
 {
-    private const string FallbackImageUrl = "/images/placeholder.webp"; // todo: pp can be moved to appsettings
-
     private readonly IMemoryCache _cache;
     private readonly HttpClient _http;
     private readonly ILogger<ImageCacheService> _logger;
@@ -26,18 +24,19 @@ public class ImageCacheService : IImageCacheService
         _logger = logger;
     }
 
-    public async Task<string> CacheImage(string externalUrl)
+    // todo: pp can be refactored to return result object with rich logic
+    public async Task<string?> CacheImage(string externalUrl)
     {
         var key = ComputeKey(externalUrl);
-        if (_cache.TryGetValue<ImageCacheEntry>(key, out var entry)) return BuildCachedImageUrl(key);
+        if (_cache.TryGetValue<ImageCacheEntry>(key, out var entry)) return key;
 
         var (bytes, contentType) = await FetchImage(externalUrl);
-        if (bytes == null || contentType == null) return FallbackImageUrl;
+        if (bytes == null || contentType == null) return null;
 
         entry = new ImageCacheEntry(bytes, contentType);
         _cache.Set(key, entry, _ttl);
 
-        return BuildCachedImageUrl(key);
+        return key;
     }
 
     private async Task<(byte[]? Bytes, string? ContentType)> FetchImage(string externalUrl)
@@ -85,8 +84,6 @@ public class ImageCacheService : IImageCacheService
         var hash = sha.ComputeHash(Encoding.UTF8.GetBytes(raw));
         return Convert.ToHexString(hash);
     }
-
-    private static string BuildCachedImageUrl(string key) => $"/cached-images/{key}"; // todo: pp can be moved to appsettings or encapsulated into separate class with interface
 
     public record ImageCacheEntry(byte[] Bytes, string ContentType); // todo: pp can be moved somewhere else
 }

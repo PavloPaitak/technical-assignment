@@ -5,7 +5,10 @@
 @inject IImageCacheService ImageCacheService
 
 @code {
+    private const string FallbackImageUrl = "/images/placeholder.webp"; // todo: pp can be moved to appsettings
+
     [Parameter] public required string Id { get; set; }
+
     private Item? item;
 
     protected override async Task OnParametersSetAsync()
@@ -19,12 +22,15 @@
 
         var tasks = groups.Select(async group =>
         {
-            var cachedImageUrl = await ImageCacheService.CacheImage(externalUrl: group.Key);
+            var cachedImageKey = await ImageCacheService.CacheImage(externalUrl: group.Key);
+            var cachedImageUrl = cachedImageKey != null ? BuildCachedImageUrl(cachedImageKey) : FallbackImageUrl;
             foreach (var image in group) image.CachedUrl = cachedImageUrl;
         });
 
         await Task.WhenAll(tasks);
     }
+    
+    private static string BuildCachedImageUrl(string key) => $"/cached-images/{key}";
 }
 
 @if (item == null)
