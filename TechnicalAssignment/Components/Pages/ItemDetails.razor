@@ -13,15 +13,17 @@
         Item = await ItemService.GetItem(Id);
         if (Item == null) return;
         
-        foreach (var img in Item.CardImages)
-        {
-            img.CachedUrl = await ImageCacheService.GetCachedImageUrl(img.Url);
-        }
+        var groups = Item.CardImages
+            .Concat(Item.KeyArtImages)
+            .GroupBy(img => img.Url);
 
-        foreach (var img in Item.KeyArtImages)
+        var tasks = groups.Select(async group =>
         {
-            img.CachedUrl = await ImageCacheService.GetCachedImageUrl(img.Url);
-        }
+            var cachedUrl = await ImageCacheService.GetCachedImageUrl(group.Key);
+            foreach (var image in group) image.CachedUrl = cachedUrl;
+        });
+
+        await Task.WhenAll(tasks);
     }
 }
 
