@@ -98,7 +98,7 @@ else
             @foreach (var img in item.CardImages)
             {
                 <div class="img-frame" style="width:@(img.W)px; height:@(img.H)px;">
-                    <img src="@img.CachedUrl" alt="" />
+                    <img src="@img.CachedUrl" alt="" loading="lazy" />
                 </div>
             }
         </dd>
@@ -108,7 +108,7 @@ else
             @foreach (var img in item.KeyArtImages)
             {
                 <div class="img-frame" style="width:@(img.W)px; height:@(img.H)px;">
-                    <img src="@img.CachedUrl" alt="" />
+                    <img src="@img.CachedUrl" alt="" loading="lazy" />
                 </div>
             }
         </dd>
