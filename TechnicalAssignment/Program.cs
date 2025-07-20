@@ -16,6 +16,7 @@ public class Program
         builder.Services.AddItemApi(config);
         builder.Services.AddMemoryCache();
         builder.Services.AddScoped<IItemService, ItemService>();
+        builder.Services.Configure<ItemServiceSettings>(builder.Configuration.GetSection(ItemServiceSettings.SectionName));
         builder.Services.AddScoped<IImageCacheService, ImageCacheService>();
         builder.Services.AddHttpClient<ImageCacheService>()
             .SetHandlerLifetime(TimeSpan.FromMinutes(5))

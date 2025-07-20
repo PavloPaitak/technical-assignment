@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using TechnicalAssignment.Application.Services;
 using TechnicalAssignment.Core;
 using TechnicalAssignment.Infrastructure.HttpClients;
@@ -11,12 +12,16 @@ public class ItemService : IItemService
 
     private readonly IItemApi _api;
     private readonly IMemoryCache _cache;
-    private readonly TimeSpan _ttl = TimeSpan.FromMinutes(5); // todo: pp can be moved to appsettings
+    private readonly TimeSpan _ttl;
 
-    public ItemService(IItemApi api, IMemoryCache cache)
+    public ItemService(
+        IItemApi api,
+        IMemoryCache cache,
+        IOptions<ItemServiceSettings> options)
     {
         _api = api;
         _cache = cache;
+        _ttl = options.Value.Ttl;
     }
 
     public async Task<IReadOnlyList<Item>> GetItems()
@@ -49,4 +54,11 @@ public class ItemService : IItemService
     {
         return $"Item:{id}";
     }
+}
+
+public class ItemServiceSettings
+{
+    public const string SectionName = "ItemService";
+
+    public TimeSpan Ttl { get; set; }
 }
