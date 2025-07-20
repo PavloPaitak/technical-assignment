@@ -85,7 +85,7 @@ public class ImageCacheService : IImageCacheService
         return Convert.ToHexString(hash);
     }
 
-    private static string BuildCachedImageUrl(string key) => $"/images/{key}"; // todo: pp can be moved to appsettings or encapsulated into separate class with interface
+    private static string BuildCachedImageUrl(string key) => $"/cached-images/{key}"; // todo: pp can be moved to appsettings or encapsulated into separate class with interface
 
     public record ImageCacheEntry(byte[] Bytes, string ContentType); // todo: pp can be moved somewhere else
 }

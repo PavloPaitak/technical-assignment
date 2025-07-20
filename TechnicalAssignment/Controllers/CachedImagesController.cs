@@ -5,12 +5,12 @@ using TechnicalAssignment.Infrastructure.Services;
 namespace TechnicalAssignment.Controllers;
 
 [ApiController]
-[Route("images")]
-public class ImagesController : ControllerBase
+[Route("cached-images")]
+public class CachedImagesController : ControllerBase
 {
     private readonly IMemoryCache _cache;
 
-    public ImagesController(IMemoryCache cache)
+    public CachedImagesController(IMemoryCache cache)
     {
         _cache = cache;
     }
