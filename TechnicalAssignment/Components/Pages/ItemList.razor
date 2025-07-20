@@ -4,6 +4,15 @@
 @using TechnicalAssignment.Application.Services
 @inject IItemService ItemService
 
+@code {
+    private IReadOnlyList<Item>? items;
+
+    protected override async Task OnInitializedAsync()
+    {
+        items = await ItemService.GetItems();
+    }
+}
+
 <h1>All Items</h1>
 
 @if (items == null)
@@ -38,13 +47,4 @@ else
         }
         </tbody>
     </table>
-}
-
-@code {
-    private IReadOnlyList<Item>? items;
-
-    protected override async Task OnInitializedAsync()
-    {
-        items = await ItemService.GetItems();
-    }
 }

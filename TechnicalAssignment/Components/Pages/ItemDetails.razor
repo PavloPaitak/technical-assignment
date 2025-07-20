@@ -6,15 +6,15 @@
 
 @code {
     [Parameter] public required string Id { get; set; }
-    private Item? Item;
+    private Item? item;
 
     protected override async Task OnParametersSetAsync()
     {
-        Item = await ItemService.GetItem(Id);
-        if (Item == null) return;
+        item = await ItemService.GetItem(Id);
+        if (item == null) return;
         
-        var groups = Item.CardImages
-            .Concat(Item.KeyArtImages)
+        var groups = item.CardImages
+            .Concat(item.KeyArtImages)
             .GroupBy(img => img.Url);
 
         var tasks = groups.Select(async group =>
@@ -27,75 +27,75 @@
     }
 }
 
-@if (Item == null)
+@if (item == null)
 {
     <h3>Item not found</h3>
 }
 else
 {
-    <h2>Details for: @Item.Headline</h2>
+    <h2>Details for: @item.Headline</h2>
 
     <dl class="row">
         <dt class="col-sm-2">Id</dt>
-        <dd class="col-sm-10">@Item.Id</dd>
+        <dd class="col-sm-10">@item.Id</dd>
 
         <dt class="col-sm-2">Headline</dt>
-        <dd class="col-sm-10">@Item.Headline</dd>
+        <dd class="col-sm-10">@item.Headline</dd>
 
         <dt class="col-sm-2">Body</dt>
-        <dd class="col-sm-10">@Item.Body</dd>
+        <dd class="col-sm-10">@item.Body</dd>
 
         <dt class="col-sm-2">Cast</dt>
-        <dd class="col-sm-10">@string.Join(", ", Item.Cast.Select(c => c.Name))</dd>
+        <dd class="col-sm-10">@string.Join(", ", item.Cast.Select(c => c.Name))</dd>
 
         <dt class="col-sm-2">Directors</dt>
-        <dd class="col-sm-10">@string.Join(", ", Item.Directors.Select(d => d.Name))</dd>
+        <dd class="col-sm-10">@string.Join(", ", item.Directors.Select(d => d.Name))</dd>
 
         <dt class="col-sm-2">Genres</dt>
-        <dd class="col-sm-10">@string.Join(", ", Item.Genres)</dd>
+        <dd class="col-sm-10">@string.Join(", ", item.Genres)</dd>
 
         <dt class="col-sm-2">Class</dt>
-        <dd class="col-sm-10">@Item.Class</dd>
+        <dd class="col-sm-10">@item.Class</dd>
 
         <dt class="col-sm-2">Cert</dt>
-        <dd class="col-sm-10">@Item.Cert</dd>
+        <dd class="col-sm-10">@item.Cert</dd>
 
         <dt class="col-sm-2">Duration</dt>
-        <dd class="col-sm-10">@Item.Duration</dd>
+        <dd class="col-sm-10">@item.Duration</dd>
 
         <dt class="col-sm-2">Year</dt>
-        <dd class="col-sm-10">@Item.Year</dd>
+        <dd class="col-sm-10">@item.Year</dd>
 
         <dt class="col-sm-2">LastUpdated</dt>
-        <dd class="col-sm-10">@Item.LastUpdated</dd>
+        <dd class="col-sm-10">@item.LastUpdated</dd>
 
         <dt class="col-sm-2">Quote</dt>
-        <dd class="col-sm-10">@Item.Quote</dd>
+        <dd class="col-sm-10">@item.Quote</dd>
 
         <dt class="col-sm-2">Rating</dt>
-        <dd class="col-sm-10">@Item.Rating</dd>
+        <dd class="col-sm-10">@item.Rating</dd>
 
         <dt class="col-sm-2">ReviewAuthor</dt>
-        <dd class="col-sm-10">@Item.ReviewAuthor</dd>
+        <dd class="col-sm-10">@item.ReviewAuthor</dd>
 
         <dt class="col-sm-2">Sum</dt>
-        <dd class="col-sm-10">@Item.Sum</dd>
+        <dd class="col-sm-10">@item.Sum</dd>
 
         <dt class="col-sm-2">Synopsis</dt>
-        <dd class="col-sm-10">@Item.Synopsis</dd>
+        <dd class="col-sm-10">@item.Synopsis</dd>
 
         <dt class="col-sm-2">Url</dt>
-        <dd class="col-sm-10">@Item.Url</dd>
+        <dd class="col-sm-10">@item.Url</dd>
 
         <dt class="col-sm-2">SkyGoId</dt>
-        <dd class="col-sm-10">@Item.SkyGoId</dd>
+        <dd class="col-sm-10">@item.SkyGoId</dd>
 
         <dt class="col-sm-2">SkyGoUrl</dt>
-        <dd class="col-sm-10">@Item.SkyGoUrl</dd>
+        <dd class="col-sm-10">@item.SkyGoUrl</dd>
 
         <dt class="col-sm-2">CardImages URLs</dt>
         <dd class="col-sm-10">
-            @foreach (var img in Item.CardImages)
+            @foreach (var img in item.CardImages)
             {
                 <div class="img-frame" style="width:@(img.W)px; height:@(img.H)px;">
                     <img src="@img.CachedUrl" alt="" />
@@ -105,7 +105,7 @@ else
 
         <dt class="col-sm-2">KeyArtImages URLs</dt>
         <dd class="col-sm-10">
-            @foreach (var img in Item.KeyArtImages)
+            @foreach (var img in item.KeyArtImages)
             {
                 <div class="img-frame" style="width:@(img.W)px; height:@(img.H)px;">
                     <img src="@img.CachedUrl" alt="" />
@@ -115,9 +115,9 @@ else
 
         <dt class="col-sm-2">Videos</dt>
         <dd class="col-sm-10">
-            @if (Item.Videos.Any())
+            @if (item.Videos.Any())
             {
-                foreach (var vid in Item.Videos)
+                foreach (var vid in item.Videos)
                 {
                     <div class="mb-3">
                         <strong>@vid.Title</strong> (@vid.Type): @vid.Url<br />
@@ -139,10 +139,10 @@ else
 
         <dt class="col-sm-2">ViewingWindow</dt>
         <dd class="col-sm-10">
-            StartDate: @Item.ViewingWindow?.StartDate<br />
-            EndDate:   @Item.ViewingWindow?.EndDate<br />
-            WayToWatch: @Item.ViewingWindow?.WayToWatch<br />
-            Title (alt): @Item.ViewingWindow?.Title
+            StartDate: @item.ViewingWindow?.StartDate<br />
+            EndDate:   @item.ViewingWindow?.EndDate<br />
+            WayToWatch: @item.ViewingWindow?.WayToWatch<br />
+            Title (alt): @item.ViewingWindow?.Title
         </dd>
     </dl>
 
