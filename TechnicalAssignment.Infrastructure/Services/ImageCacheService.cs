@@ -7,6 +7,7 @@ using TechnicalAssignment.Application.Services;
 namespace TechnicalAssignment.Infrastructure.Services;
 
 // todo: pp it can be refactored into ImageFatcher/ImageService and ImageCacheService
+// todo: pp cover with tests
 public class ImageCacheService : IImageCacheService
 {
     private readonly IMemoryCache _cache;
